@@ -76,8 +76,8 @@ function mostrarResumen() {
 
 
 
-/*Continuar*/
-
+/*iniciar*/
+function iniciarSimulador() {
 ingresarPresupuesto();
 
 let continuar = true;
@@ -90,3 +90,4 @@ while (continuar) {
 calcularTotal();
 calcularSobrante();
 mostrarResumen();
+}
