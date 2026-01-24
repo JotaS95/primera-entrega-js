@@ -19,10 +19,6 @@ function ingresarPresupuesto() {
 function ingresarGasto() {
     let nombreGasto = (prompt("Qué clase de gasto desea ingresar:"));
 
-    if (nombreGasto === null) {
-        alert("Gasto cancelado");
-        return;
-
         let montoGasto = Number(prompt("Ingrese el monto del gasto:"));
 
         gastos.push(nombreGasto);
