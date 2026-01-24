@@ -17,7 +17,7 @@ function ingresarPresupuesto() {
 /*Ingresar un gasto*/
 
 function ingresarGasto() {
-    let nombreGasto = (prompt("Qué clase de gasto desea ingresar:"));
+    let nombreGasto = String(prompt("Qué clase de gasto desea ingresar:"));
 
     let montoGasto = Number(prompt("Ingrese el monto del gasto:"));
 
