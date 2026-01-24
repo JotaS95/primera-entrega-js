@@ -62,7 +62,7 @@ function mostrarResumen() {
 
     if (saldoSobrante === 0) {
         mensaje += "Ya no te queda plata papi..."
-        
+
     } else if (totalGastos > presupuesto) {
         mensaje += "Te pasaste del presupuesto KAPO."
 
@@ -78,16 +78,23 @@ function mostrarResumen() {
 
 /*iniciar*/
 function iniciarSimulador() {
-ingresarPresupuesto();
+    /*Reset del simulador*/
+    gastos = [];
+    montos = [];
+    totalGastos = 0;
+    saldoSobrante = 0;
 
-let continuar = true;
+    /*Ejecucion del simulador*/
+    ingresarPresupuesto();
 
-while (continuar) {
-    ingresarGasto();
-    continuar = confirm("¿Quieres agregar otro gasto?");
-}
+    let continuar = true;
 
-calcularTotal();
-calcularSobrante();
-mostrarResumen();
+    while (continuar) {
+        ingresarGasto();
+        continuar = confirm("¿Quieres agregar otro gasto?");
+    }
+
+    calcularTotal();
+    calcularSobrante();
+    mostrarResumen();
 }
