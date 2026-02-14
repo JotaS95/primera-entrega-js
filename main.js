@@ -1,100 +1,90 @@
-/*VARIABLES*/
-
 let presupuesto = 0;
-let gastos = [];
-let montos = [];
-let totalGastos = 0;
-let saldoSobrante = 0;
-/*FUNCIONES*/
+let listaGastos = [];
 
-/*Pidiendo el presupuesto*/
-
-function ingresarPresupuesto() {
-    presupuesto = Number(prompt("Por favor, ingresa tu presupuesto mensual"));
-    console.log("Presupuesto ingresado:");
+// Calcular el total 
+function calcularTotalGastos(gastos) {
+    let acumulado = 0;
+    for (let item of gastos) {
+        acumulado += item.monto;
+    }
+    return acumulado;
 }
 
-/*Ingresar un gasto*/
-
-function ingresarGasto() {
-    let nombreGasto = (prompt("Qué clase de gasto desea ingresar:"));
-
-        let montoGasto = Number(prompt("Ingrese el monto del gasto:"));
-
-        gastos.push(nombreGasto);
-        montos.push(montoGasto);
-
-        console.log("Gasto agregado a la base de datos...", nombreGasto, "-", montoGasto)
+// Mostrar el resumen
+function mostrarResumen(presu, lista, total) {
+    let mensaje = "--- RESUMEN DE TUS FINANZAS ---\n\n";
+    mensaje += "Presupuesto inicial: $" + presu + "\n";
+    
+    for (let gasto of lista) {
+        mensaje += "- " + gasto.nombre + ": $" + gasto.monto + "\n";
     }
 
+    let sobrante = presu - total;
+    mensaje += "\nTotal Gastado: $" + total + "\n";
+    mensaje += "Saldo Restante: $" + sobrante + "\n\n";
 
-    /*Calcular el total de gastos*/
+    if (sobrante < 0) {
+        mensaje += "¡CUIDADO! Te has pasado del presupuesto.";
+    } else {
+        mensaje += "Estás dentro de tus límites. ¡Bien!";
+    }
 
-    function calcularTotal() {
-        totalGastos = 0;
-        for (let i = 0; i < montos.length; i++) {
-            totalGastos += montos[i];
+    alert(mensaje);
+}
+
+// Validar ingresos
+function pedirNumero(msj) {
+    let num = parseInt(prompt(msj));
+    while (isNaN(num) || num < 0) {
+        num = parseInt(prompt("Por favor, ingresa un número válido:"));
+    }
+    return num;
+}
+
+
+function iniciarSimulador() {
+    alert("Bienvenido al Simulador de Gastos");
+    
+    presupuesto = pedirNumero("Paso 1: Ingresa tu presupuesto mensual:");
+
+    let opcion;
+    do {
+        opcion = prompt(
+            "MENÚ PRINCIPAL (Presupuesto actual: $" + presupuesto + ")\n" +
+            "1 - Agregar un nuevo gasto\n" +
+            "2 - Ver resumen actual\n" +
+            "3 - Cambiar presupuesto\n" +
+            "ESC - Salir"
+        );
+
+        switch (opcion) {
+            case "1":
+                let nombre = prompt("¿Qué compraste?");
+                let monto = pedirNumero("¿Cuánto costó?");
+                listaGastos.push({ nombre: nombre, monto: monto });
+                alert("Gasto agregado correctamente.");
+                break;
+
+            case "2":
+                let totalActual = calcularTotalGastos(listaGastos);
+                mostrarResumen(presupuesto, listaGastos, totalActual);
+                break;
+
+            case "3":
+                presupuesto = pedirNumero("Ingresa el nuevo presupuesto:");
+                break;
+
+            case "ESC":
+            case "esc":
+                alert("Gracias por usar el simulador. ¡Adiós!");
+                break;
+
+            default:
+                if (opcion !== null) alert("Opción no válida.");
+                break;
         }
 
-        console.log("total de los gastos:", totalGastos);
-    }
+    } while (opcion !== "ESC" && opcion !== "esc" && opcion !== null);
+}
 
-
-    /*Lo que sobra*/
-
-    function calcularSobrante() {
-        saldoSobrante = presupuesto - totalGastos;
-        console.log("El saldo a favor es de:", saldoSobrante);
-    }
-
-
-    /*Resumen*/
-
-    function mostrarResumen() {
-        let mensaje = "El resumen de los gastos\n\n";
-
-        for (let i = 0; i < gastos.length; i++) {
-            mensaje += gastos[i] + ": $" + montos[i] + "\n";
-        }
-        mensaje += "\nTotal gastado: $" + totalGastos + "\n";
-        mensaje += "\nEl saldo a favor es de: $" + saldoSobrante + "\n"
-        mensaje += "\nPresupuesto: $" + presupuesto + "\n\n";
-
-        if (saldoSobrante === 0) {
-            mensaje += "Ya no te queda plata papi..."
-
-        } else if (totalGastos > presupuesto) {
-            mensaje += "Te pasaste del presupuesto KAPO."
-
-        } else {
-            mensaje += "Estas dentro del presupuesto MEN."
-        }
-
-        alert(mensaje);
-
-    }
-
-
-
-    /*iniciar*/
-    function iniciarSimulador() {
-        /*Reset del simulador*/
-        gastos = [];
-        montos = [];
-        totalGastos = 0;
-        saldoSobrante = 0;
-
-        /*Ejecucion del simulador*/
-        ingresarPresupuesto();
-
-        let continuar = true;
-
-        while (continuar) {
-            ingresarGasto();
-            continuar = confirm("¿Quieres agregar otro gasto?");
-        }
-
-        calcularTotal();
-        calcularSobrante();
-        mostrarResumen();
-    }
+iniciarSimulador();
